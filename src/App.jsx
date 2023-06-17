@@ -5,6 +5,7 @@ import { Login } from './pages/Auth/Login/Login.jsx'
 import { SignUp } from './pages/Auth/SignUp/SignUp.jsx'
 import { Home } from './pages/Home/Home.jsx'
 import Product from './pages/Products/Product/Product.jsx'
+import Products from './pages/Products/Products.jsx'
 import { Profile } from './pages/Profile/Profile.jsx'
 function App() {
 
