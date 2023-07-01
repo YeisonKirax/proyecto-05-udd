@@ -5,7 +5,7 @@ import userReducers from './UserReducer.jsx';
 const UserState = ( props ) => {
   const initialState = {
     user: {
-      id: null,
+      _id: null,
       fullName: null,
       email: null
     },

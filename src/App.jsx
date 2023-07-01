@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Header } from './components/Header/Header.jsx'
+import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx'
 import ShoppingCartState from './contexts/ShoppingCart/ShoppingCartState.jsx'
 import UserState from './contexts/users/UserState.jsx'
 import { Login } from './pages/Auth/Login/Login.jsx'
@@ -33,7 +34,11 @@ function App() {
               </Route>
 
               {/* Rutas privada */ }
-              <Route path='/profile' element={ <Profile></Profile> }>
+              <Route path='/profile' element={
+                <PrivateRoute>
+                  <Profile></Profile>
+                </PrivateRoute>
+              }>
               </Route>
             </Routes>
           </BrowserRouter>
