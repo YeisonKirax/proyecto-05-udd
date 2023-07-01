@@ -14,6 +14,7 @@ const userReducers = ( globalState, action ) => {
         ...globalState,
         authStatus: true
       }
+
     default:
       return globalState
   }
