@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ProductCard } from '../../components/ProductCard/ProductCard.jsx'
-import UserContext from '../../contexts/users/UserContext.jsx'
+import UserContext from '../../contexts/user/UserContext.jsx'
 
 export const Products = () => {
   const userCtx = useContext( UserContext )

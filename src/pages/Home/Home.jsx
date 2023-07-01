@@ -1,14 +1,14 @@
 import { useContext } from 'react';
 import { Carousel, Container } from 'react-bootstrap';
-import UserContext from '../../contexts/users/UserContext.jsx';
+import UserContext from '../../contexts/user/UserContext.jsx';
 
 export function Home() {
   const userCtx = useContext( UserContext )
-  const { user } = userCtx
-  const { fullName } = user
+  const { user, verifyingToken, authStatus } = userCtx
+
   return (
     <Container>
-      <h1>{ `Bienvenido ${ fullName }` }</h1>
+      <h1>{ `Bienvenido ${ user?.fullName || "sin nombre" }` }</h1>
       <Carousel>
         <Carousel.Item>
           <img

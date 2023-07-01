@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import UserContext from '../../contexts/user/UserContext.jsx'
 export const Header = () => {
   const userCtx = useContext( UserContext )
@@ -26,8 +26,16 @@ export const Header = () => {
             <Nav.Link href="/products">Productos</Nav.Link>
             {
               user?.email ? <>
-                <Nav.Link href="/profile">Perfil</Nav.Link>
-                <Nav.Link href='/' onClick={ () => logout() }>Cerrar sesión</Nav.Link>
+                {/* <Nav.Link href="/profile">Perfil</Nav.Link>
+                <Button onClick={ () => logout() }>
+                  <Nav.Link href='/'>Cerrar sesión</Nav.Link>
+                </Button> */}
+                <NavDropdown title="Sesion" id="collasible-nav-dropdown">
+                  <NavDropdown.Item href="/profile">Mi perfil</NavDropdown.Item>
+                  <NavDropdown.Item href="/" onClick={ () => logout() }>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
               </> : <>
                   <Nav.Link href="/auth/login">
                     Ingreso
