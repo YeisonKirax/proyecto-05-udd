@@ -1,7 +1,7 @@
-import { useReducer } from 'react'
-import UserContext from './UserContext.jsx'
-import userReducers from './UserReducer.jsx'
-
+import { useReducer } from 'react';
+import axiosClient from "../../config/axios.jsx";
+import UserContext from './UserContext.jsx';
+import userReducers from './UserReducer.jsx';
 const UserState = ( props ) => {
   const initialState = {
     user: {
@@ -16,8 +16,8 @@ const UserState = ( props ) => {
 
   const registerUser = async ( dataForm ) => {
     try {
-      const res = await fetch( "http://locahost:4500/auth/signup", { method: 'POST', headers: { "Content-type": 'application/json', "Accept": 'application/json' }, body: JSON.stringify( dataForm ) } )
-      const payload = await res.json() // {token: "..."}
+      const res = await axiosClient.post( "/auth/signup", dataForm )
+      const payload = res.data // {token: "..."}
       dispatch( {
         type: "REGISTRO_EXITOSO",
         payload: payload
@@ -29,8 +29,8 @@ const UserState = ( props ) => {
 
   const loginUser = async ( dataForm ) => {
     try {
-      const res = await fetch( "http://locahost:4500/auth/login", { method: 'POST', headers: { "Content-type": 'application/json', "Accept": 'application/json' }, body: JSON.stringify( dataForm ) } )
-      const payload = await res.json() // {token: "..."}
+      const res = await axiosClient.post( "/auth/login", dataForm )
+      const payload = res.data // {token: "..."}
       dispatch( {
         type: "LOGIN_EXITOSO",
         payload: payload
