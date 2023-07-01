@@ -40,11 +40,43 @@ const UserState = ( props ) => {
     }
   }
 
+  const verifyingToken = async () => {
+    const token = localStorage.getItem( 'token' )
+    if ( token ) {
+      axiosClient.defaults.headers.common.Authorization = `Bearer ${ token }`
+    } else {
+      delete axiosClient.defaults.headers.common.Authorization
+    }
+
+    try {
+      const res = await axiosClient.get( '/users/profile' )
+      const userData = res.data // {name: "...", surname: "...", email: "...", ...}
+      dispatch( {
+        type: "OBTENER_USUARIO",
+        payload: userData
+      } )
+    } catch ( error ) {
+      console.error( error )
+
+      dispatch( {
+        type: "CERRAR_SESION"
+      } )
+    }
+  }
+
+  const logout = () => {
+    dispatch( {
+      type: "CERRAR_SESION"
+    } )
+  }
+
   return (
     <UserContext.Provider value={ {
       ...globalState,
       registerUser,
-      loginUser
+      loginUser,
+      verifyingToken,
+      logout
     } }>
       { props.children }
     </UserContext.Provider>
