@@ -77,7 +77,7 @@ const UserState = ( props ) => {
       loginUser,
       verifyingToken,
       logout
-    } }>
+    } } displayName="UserContext">
       { props.children }
     </UserContext.Provider>
   )
