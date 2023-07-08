@@ -1,35 +1,33 @@
 import { useContext, useEffect, useState } from 'react'
-import { Button, Modal, Table } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { Button, Container, Table } from 'react-bootstrap'
+import { PayPalButton } from '../../components/PayPalButton/PayPalButton.jsx'
 import ShoppingCartContext from '../../contexts/ShoppingCart/ShoppingCartContext.jsx'
 
-export const ShoppingCart = ( { showShoppingCart, handleCloseShoppingCart } ) => {
+const PayPalCheckout = () => {
   const shoppingCartCtx = useContext( ShoppingCartContext )
-  const { products, getProducts, removeProduct } = shoppingCartCtx
+  const { products, removeProduct } = shoppingCartCtx
   const [ total, setTotal ] = useState( 0 )
-  const navigate = useNavigate()
+  const [ showPayPal, setShowPayPal ] = useState( false )
+  const [ successPayment, setSuccessPayment ] = useState( false )
+  const [ orderId, setOrderId ] = useState( "" )
   useEffect( () => {
-    if ( !products ) {
-      getProducts()
-    } else {
-      setTotal( 0 )
-      products.forEach( product => {
-        const { price, quantity } = product
-        setTotal( ( current ) => {
-          return current + price * quantity
-        } )
-      } );
-    }
+
+    setTotal( 0 )
+    products.forEach( product => {
+      const price = parseInt( product.price )
+      setTotal( ( current ) => {
+        return current + price * product.quantity
+      } )
+    } )
+
   }, [ products ] )
 
   return (
-    <Modal show={ showShoppingCart } onHide={ handleCloseShoppingCart }>
-      <Modal.Header closeButton>
-        <Modal.Title>Carrito de compras</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    <>
+      <Container className="bg-white">
+        <h1>Checkout</h1>
         {
-          products?.length === 0 ? "No hay productos en el carrito"
+          products?.length === 0 ? 'No hay productos'
             : (
               <Table striped bordered hover>
                 <thead>
@@ -47,8 +45,9 @@ export const ShoppingCart = ( { showShoppingCart, handleCloseShoppingCart } ) =>
                         <tr key={ index }>
                           <td>{ index + 1 }</td>
                           <td>{ product.title }</td>
-                          <td>{ product.price } </td>
+                          <td>{ product.price }</td>
                           <td>{ product.quantity }</td>
+
                           <td>
                             <Button type='button' onClick={ () => {
                               removeProduct( product._id )
@@ -58,28 +57,28 @@ export const ShoppingCart = ( { showShoppingCart, handleCloseShoppingCart } ) =>
                               </svg>
                             </Button>
                           </td>
-                        </tr>
-                      )
+                        </tr> )
                     } )
                   }
                 </tbody>
                 <tfoot>
-                  <tr >
-                    <td>Total a pagar: ${ total } USD</td>
+                  <tr>
+                    <td>TOTAL: ${ total } USD</td>
                   </tr>
                 </tfoot>
               </Table>
             )
         }
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" type='button' onClick={ () => {
-          navigate( '/checkout' )
-          handleCloseShoppingCart()
-        } }>
-          Ir a pagar
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        <Container>
+          <Button onClick={ () => setShowPayPal( !showPayPal ) } disabled={ showPayPal || products.length === 0 }>Pagar</Button>
+        </Container>
+        { showPayPal ? <PayPalButton currency={ "USD" } showSpinner={ false } products={ products } setSuccessPayment={ setSuccessPayment } setOrderId={ setOrderId }></PayPalButton> : null }
+      </Container>
+      <Container>
+        { successPayment && showPayPal ? <h3>El pago se ha realizado correctamente con número de orden { orderId }</h3> : "El pago esta pendiente" }
+      </Container>
+    </>
   )
 }
+
+export default PayPalCheckout
